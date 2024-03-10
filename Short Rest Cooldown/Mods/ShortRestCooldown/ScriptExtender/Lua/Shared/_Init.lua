@@ -1,4 +1,4 @@
-setmetatable(Mods.ShortRestCooldown, {__index = Mods.VolitionCabinet})
+setmetatable(Mods.ShortRestCooldown, { __index = Mods.VolitionCabinet })
 
 ---Ext.Require files at the path
 ---@param path string
@@ -12,6 +12,9 @@ end
 RequireFiles("Shared/", {
     "MetaClass",
     "Helpers/_Init",
+    "Classes/_Init",
+    "SubscribedEvents",
+    "EventHandlers",
 })
 
 local MODVERSION = Ext.Mod.GetMod(ModuleUUID).Info.ModVersion
@@ -23,8 +26,9 @@ else
     table.remove(MODVERSION)
 
     local versionNumber = table.concat(MODVERSION, ".")
-    SRCPrint(0, "version " .. versionNumber .. " loaded")
+    SRCPrint(0, "Short Rest Cooldown version " .. versionNumber .. " loaded")
 end
 
--- local EventSubscription = Ext.Require("Shared/SubscribedEvents.lua")
--- EventSubscription.SubscribeToEvents()
+ShortRestInstance = ShortRest:New()
+
+SubscribedEvents.SubscribeToEvents()
