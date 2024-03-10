@@ -1,4 +1,4 @@
-RequireFiles("Shared/Helpers", {
+RequireFiles("Shared/Helpers/", {
   "Config",
   "Printer",
   "Utils",
