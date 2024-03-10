@@ -19,7 +19,7 @@
           <attribute id="Author" type="LSString" value="Volitio" />
           <attribute id="CharacterCreationLevelName" type="FixedString" value="" />
           <attribute id="Description" type="LSString" value="Adds a... short... cooldown to short rest so you don't double rest accidentally. Configurable through a .json file." />
-          <attribute id="Folder" type="LSString" value="WaypointInsideEmeraldGrove" />
+          <attribute id="Folder" type="LSString" value="ShortRestCooldown" />
           <attribute id="LobbyLevelName" type="FixedString" value="" />
           <attribute id="MD5" type="LSString" value="" />
           <attribute id="MainMenuBackgroundVideo" type="FixedString" value="" />
