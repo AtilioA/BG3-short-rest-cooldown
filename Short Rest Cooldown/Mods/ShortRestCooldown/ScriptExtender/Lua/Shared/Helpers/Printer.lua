@@ -1,4 +1,4 @@
-SRCPrinter = VolitionCabinetPrinter:New { Prefix = "SRC", ApplyColor = true, DebugLevel = Config:GetCurrentDebugLevel() }
+SRCPrinter = VolitionCabinetPrinter:New { Prefix = "Short Rest Cooldown", ApplyColor = true, DebugLevel = Config:GetCurrentDebugLevel() }
 
 function SRCPrint(debugLevel, ...)
   SRCPrinter:SetFontColor(0, 255, 255)
