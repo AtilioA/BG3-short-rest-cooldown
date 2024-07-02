@@ -4,53 +4,76 @@
 ShortRest = _Class:Create("ShortRest")
 
 function ShortRest:Init()
-  self.ShouldShortRestBeBlocked = false
-  self.LastShortRestedTime = nil
-  self.CooldownTimer = Config:getCfg().FEATURES.cooldown
+    self.ShouldShortRestBeBlocked = false
+    self.LastShortRestedTime = nil
+    self.CooldownDuration = MCMGet("cooldown_duration")
+    self.OnlyInMultiplayer = MCMGet("only_in_multiplayer")
+
+    -- VCHelpers.Object:DumpObjectEntity(Osi.GetHostCharacter(), "src_entity")
+
+    -- Check state of short rest upon loading a save: if it was blocked, then enable it again.
+    -- This is necessary because, if the cooldown is too long and the player saves and reloads, the short rest will be blocked, but the cooldown will not be active anymore, so short resting would be disabled indefinitely.
+    SRCModVars = Ext.Vars.GetModVariables(ModuleUUID)
+    SRCModVars.HasBlockedShortRest = SRCModVars.HasBlockedShortRest or false
+    if SRCModVars.HasBlockedShortRest then
+        self:EnableShortRest()
+    end
 end
 
 function ShortRest:HandleCooldownFinished(timer)
-  SRCDebug(1, "Short rest cooldown has finished.")
-  self.ShouldShortRestBeBlocked = false
-  self:EnableShortRest()
+    SRCDebug(1, "Short rest cooldown has finished.")
+    self.ShouldShortRestBeBlocked = false
+    self:EnableShortRest()
 end
 
 --- Checks if the short rest cooldown is active.
 function ShortRest:IsCooldownActive()
-  -- Nil check for LastShortRestedTime: if it's nil, then the cooldown is not active.
-  if not self.LastShortRestedTime then
-    return false
-  end
+    -- Nil check for LastShortRestedTime: if it's nil, then the cooldown is not active.
+    if not self.LastShortRestedTime then
+        return false
+    end
 
-  -- Fetch the current time and the cooldown duration from the config to compare.
-  local currentTime = Ext.Utils.MonotonicTime() -- MonotonicTime returns time in milliseconds
-  local cooldownDuration = self.CooldownTimer
+    -- Fetch the current time and the cooldown duration from the config to compare.
+    local currentTime = Ext.Utils.MonotonicTime()
 
-  -- Cooldown is active if the time difference between the current time and the last short rested time is less than the cooldown duration.
-  return (currentTime - self.LastShortRestedTime) < (cooldownDuration * 1000)
+    -- Cooldown is active if the time difference between the current time and the last short rested time is less than the cooldown duration.
+    return (currentTime - self.LastShortRestedTime) <
+        (self.CooldownDuration * 1000) -- MonotonicTime returns time in milliseconds
 end
 
 function ShortRest:DisableShortRest()
-  Osi.SetShortRestAvailable(0)
-  SRCDebug(1, "Short rest is now disabled.")
+    Osi.SetShortRestAvailable(0)
+    SRCDebug(1, "Short rest is now disabled.")
+    SRCModVars = Ext.Vars.GetModVariables(ModuleUUID)
+    SRCModVars.HasBlockedShortRest = true
 end
 
 function ShortRest:EnableShortRest()
-  Osi.SetShortRestAvailable(1)
-  SRCDebug(1, "Short rest is now enabled.")
+    Osi.SetShortRestAvailable(1)
+    SRCDebug(1, "Short rest is now enabled.")
+    SRCModVars = Ext.Vars.GetModVariables(ModuleUUID)
+    SRCModVars.HasBlockedShortRest = false
 end
 
 --- Handles the short rested event, applying the cooldown if necessary.
 ---@param character CHARACTER
 function ShortRest:HandleShortRested(character)
-  Osi.TimerLaunch("ShortRestCooldown", self.CooldownTimer * 1000)
-  if self:IsCooldownActive() then
-    SRCPrint(0, "Short rest is currently blocked due to cooldown.")
-  else
-    SRCDebug(1, "Short rest is not on cooldown. Proceeding with short rest.")
-    self.LastShortRestedTime = Ext.Utils.MonotonicTime()
-    self:DisableShortRest()
-  end
+    if self.OnlyInMultiplayer and Osi.GetUserCount() <= 1 then
+        SRCDebug(1, "Short rest cooldown is only applied in multiplayer, skipping.")
+        return
+    end
+
+    Ext.Timer.WaitFor(self.CooldownDuration * 1000, function()
+        self:HandleCooldownFinished()
+    end)
+
+    if self:IsCooldownActive() then
+        SRCPrint(0, "Short rest is currently blocked due to a cooldown of " .. self.CooldownDuration .. " seconds.")
+    else
+        SRCDebug(1, "Short rest is not on cooldown. Proceeding with short rest.")
+        self.LastShortRestedTime = Ext.Utils.MonotonicTime()
+        self:DisableShortRest()
+    end
 end
 
 return ShortRest
