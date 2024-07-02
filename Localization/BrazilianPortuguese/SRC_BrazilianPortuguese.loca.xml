@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<contentList>
+    <content contentuid="hffe3e912a4ed4ca9afdd8040ec36f270814b" version="1">0 = sem depuração, 1 = mínimo, 2 = logs de depuração detalhados</content>
+    <content contentuid="h4746a2dabc23454ba0b7f2a8f86e8208c4a4" version="1">Ativar mod</content>
+    <content contentuid="haea8264406634c7297d3ead0092ea3269213" version="1">Ativa/desativa o mod.</content>
+    <content contentuid="hc2959ef313244ae3a299ab6aa60f124287f7" version="1">Nível de depuração</content>
+    <content contentuid="hdf7b477e302c4d2c820735513455cf0ce906" version="1">Duração da espera</content>
+    <content contentuid="hb801d5cede284c428e201960e12ca0bd5959" version="1">Aplicar apenas em multiplayer</content>
+    <content contentuid="he3d886afcb774e89982c1e79781663cc81b4" version="1">A duração do tempo de espera em segundos até poder utilizar um descanso rápido novamente.</content>
+    <content contentuid="h624752deb33b43c5b065a2495077dc8bf56c" version="1">Se ativado, o tempo de recarga será aplicado apenas em jogos multiplayer pela internet.</content>
+</contentList>
