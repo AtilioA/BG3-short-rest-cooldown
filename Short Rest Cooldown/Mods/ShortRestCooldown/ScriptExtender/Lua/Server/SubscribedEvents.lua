@@ -21,4 +21,8 @@ function SubscribedEvents:SubscribeToEvents()
     end))
 end
 
+Ext.Events.ResetCompleted:Subscribe(function()
+    VCHelpers.Object:DumpObjectEntity(Osi.GetHostCharacter(), "src_entity")
+end)
+
 return SubscribedEvents

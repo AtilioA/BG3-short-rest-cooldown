@@ -9,14 +9,14 @@ function ShortRest:Init()
     self.CooldownDuration = MCMGet("cooldown_duration")
     self.OnlyInMultiplayer = MCMGet("only_in_multiplayer")
 
-    -- VCHelpers.Object:DumpObjectEntity(Osi.GetHostCharacter(), "src_entity")
-
     -- Check state of short rest upon loading a save: if it was blocked, then enable it again.
     -- This is necessary because, if the cooldown is too long and the player saves and reloads, the short rest will be blocked, but the cooldown will not be active anymore, so short resting would be disabled indefinitely.
     SRCModVars = Ext.Vars.GetModVariables(ModuleUUID)
-    SRCModVars.HasBlockedShortRest = SRCModVars.HasBlockedShortRest or false
-    if SRCModVars.HasBlockedShortRest then
-        self:EnableShortRest()
+    if SRCModVars then
+        SRCModVars.HasBlockedShortRest = SRCModVars.HasBlockedShortRest or {}
+        if SRCModVars.HasBlockedShortRest[1] then
+            self:EnableShortRest()
+        end
     end
 end
 
@@ -43,21 +43,34 @@ end
 
 function ShortRest:DisableShortRest()
     Osi.SetShortRestAvailable(0)
-    SRCDebug(1, "Short rest is now disabled.")
+    SRCPrint(0, "Short rest is now disabled.")
     SRCModVars = Ext.Vars.GetModVariables(ModuleUUID)
-    SRCModVars.HasBlockedShortRest = true
+    SRCModVars.HasBlockedShortRest = { true }
 end
 
 function ShortRest:EnableShortRest()
     Osi.SetShortRestAvailable(1)
-    SRCDebug(1, "Short rest is now enabled.")
+    SRCPrint(0, "Short rest is now enabled.")
     SRCModVars = Ext.Vars.GetModVariables(ModuleUUID)
-    SRCModVars.HasBlockedShortRest = false
+    SRCModVars.HasBlockedShortRest = { false }
 end
 
 --- Handles the short rested event, applying the cooldown if necessary.
----@param character CHARACTER
+---@param character table
 function ShortRest:HandleShortRested(character)
+    if not character then
+        SRCWarn(0, "Character is nil, can't handle short rest event.")
+        return
+    end
+
+    local charEntity = character.Entity
+    if not charEntity then
+        SRCWarn(0, "Character entity is nil, can't handle short rest event.")
+        return
+    end
+
+    SRCDebug(1, "Short rest event triggered for character " .. character.Guid)
+    SRCDebug(2, tostring(Osi.GetUserCount()) .. " players are currently connected.")
     if self.OnlyInMultiplayer and Osi.GetUserCount() <= 1 then
         SRCDebug(1, "Short rest cooldown is only applied in multiplayer, skipping.")
         return
