@@ -7,5 +7,5 @@
     <content contentuid="hdf7b477e302c4d2c820735513455cf0ce906" version="1">Duração da espera</content>
     <content contentuid="hb801d5cede284c428e201960e12ca0bd5959" version="1">Aplicar apenas em multiplayer</content>
     <content contentuid="he3d886afcb774e89982c1e79781663cc81b4" version="1">A duração do tempo de espera em segundos até poder utilizar um descanso rápido novamente.</content>
-    <content contentuid="h624752deb33b43c5b065a2495077dc8bf56c" version="1">Se ativado, o tempo de recarga será aplicado apenas em jogos multiplayer pela internet.</content>
+    <content contentuid="h624752deb33b43c5b065a2495077dc8bf56c" version="1">Se ativado, o tempo de espera será aplicado apenas em jogos multiplayer.</content>
 </contentList>

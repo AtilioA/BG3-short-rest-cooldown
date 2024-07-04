@@ -7,5 +7,5 @@
     <content contentuid="hdf7b477e302c4d2c820735513455cf0ce906" version="1">Cooldown duration</content>
     <content contentuid="hb801d5cede284c428e201960e12ca0bd5959" version="1">Only apply in multiplayer</content>
     <content contentuid="he3d886afcb774e89982c1e79781663cc81b4" version="1">The duration of the short rest cooldown in seconds until you can use a short rest again.</content>
-    <content contentuid="h624752deb33b43c5b065a2495077dc8bf56c" version="1">If enabled, the cooldown will only be applied in internet multiplayer games.</content>
+    <content contentuid="h624752deb33b43c5b065a2495077dc8bf56c" version="1">If enabled, the cooldown will only be applied in multiplayer games.</content>
 </contentList>
