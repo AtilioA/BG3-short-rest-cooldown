@@ -16,13 +16,9 @@ function SubscribedEvents:SubscribeToEvents()
         Ext.Json.Stringify(Mods.BG3MCM.MCMAPI:GetAllModSettings(ModuleUUID), { Beautify = true }))
 
     -- Event subscriptions
-    Events.Osiris.ShortRested:Subscribe(conditionalWrapper(function(character)
+    Ext.Osiris.RegisterListener("ShortRested", 1, "after", conditionalWrapper(function(character)
         ShortRestInstance:HandleShortRested(character)
     end))
 end
-
-Ext.Events.ResetCompleted:Subscribe(function()
-    VCHelpers.Object:DumpObjectEntity(Osi.GetHostCharacter(), "src_entity")
-end)
 
 return SubscribedEvents

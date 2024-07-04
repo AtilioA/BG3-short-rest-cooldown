@@ -1,7 +1,6 @@
 setmetatable(Mods.ShortRestCooldown, { __index = Mods.VolitionCabinet })
 
 local deps = {
-    VCModuleUUID = "f97b43be-7398-4ea5-8fe2-be7eb3d4b5ca",
     MCMModuleUUID = "755a8a72-407f-4f0d-9a33-274ac0f0b53d"
 }
 
@@ -33,7 +32,7 @@ local function checkDependency(depUUID)
 end
 
 local allDependenciesLoaded = true
-allDependenciesLoaded = checkDependency(deps.VCModuleUUID) and checkDependency(deps.MCMModuleUUID)
+allDependenciesLoaded = checkDependency(deps.MCMModuleUUID)
 
 if not allDependenciesLoaded then
     SRCWarn(0, "Not all dependencies are loaded. Some functionality may be limited.")
@@ -57,7 +56,6 @@ RequireFiles("Server/", {
     "Helpers/_Init",
     "Classes/_Init",
     "SubscribedEvents",
-    "EventHandlers",
 })
 
 ShortRestInstance = ShortRest:New()

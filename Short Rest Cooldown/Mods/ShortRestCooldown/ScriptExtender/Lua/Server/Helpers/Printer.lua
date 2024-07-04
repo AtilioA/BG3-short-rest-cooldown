@@ -1,4 +1,4 @@
-SRCPrinter = VolitionCabinetPrinter:New { Prefix = "Short Rest Cooldown", ApplyColor = true, DebugLevel = MCMGet("debug_level") }
+SRCPrinter = Printer:New { Prefix = "Short Rest Cooldown", ApplyColor = true, DebugLevel = MCMGet("debug_level") }
 
 -- Update the Printer debug level when the setting is changed, since the value is only used during the object's creation
 Ext.RegisterNetListener("MCM_Saved_Setting", function(call, payload)

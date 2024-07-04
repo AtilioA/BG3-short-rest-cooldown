@@ -56,20 +56,20 @@ function ShortRest:EnableShortRest()
 end
 
 --- Handles the short rested event, applying the cooldown if necessary.
----@param character table
+---@param character GUIDSTRING
 function ShortRest:HandleShortRested(character)
     if not character then
         SRCWarn(0, "Character is nil, can't handle short rest event.")
         return
     end
 
-    local charEntity = character.Entity
+    local charEntity = Ext.Entity.Get(character)
     if not charEntity then
         SRCWarn(0, "Character entity is nil, can't handle short rest event.")
         return
     end
 
-    SRCDebug(1, "Short rest event triggered for character " .. character.Guid)
+    SRCDebug(1, "Short rest event triggered for character " .. character)
     SRCDebug(2, tostring(Osi.GetUserCount()) .. " players are currently connected.")
     if self.OnlyInMultiplayer and Osi.GetUserCount() <= 1 then
         SRCDebug(1, "Short rest cooldown is only applied in multiplayer, skipping.")
