@@ -1,7 +1,7 @@
 ---@class MetaClass
 ---@field private _ClassName string
 _MetaClass = {
-  _ClassName = "VolitionCabinetMetaClass",
+  _ClassName = "MetaClass",
 }
 ---@private
 _MetaClass.__index = _MetaClass

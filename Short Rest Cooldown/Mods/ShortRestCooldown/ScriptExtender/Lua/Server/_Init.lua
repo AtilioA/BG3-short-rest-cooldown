@@ -1,5 +1,3 @@
-setmetatable(Mods.ShortRestCooldown, { __index = Mods.VolitionCabinet })
-
 local deps = {
     MCMModuleUUID = "755a8a72-407f-4f0d-9a33-274ac0f0b53d"
 }
