@@ -9,6 +9,26 @@ function ShortRest:Init()
     self.CooldownDuration = MCMGet("cooldown_duration")
     self.OnlyInMultiplayer = MCMGet("only_in_multiplayer")
 
+    -- Define the mapping of MCM settings to ShortRest attributes
+    local settingsMap = {
+        cooldown_duration = "CooldownDuration",
+        only_in_multiplayer = "OnlyInMultiplayer",
+    }
+
+    -- Update the ShortRest instance values when the MCM settings are changed
+    Ext.RegisterNetListener("MCM_Saved_Setting", function(call, payload)
+        local data = Ext.Json.Parse(payload)
+        if not data or data.modGUID ~= ModuleUUID or not data.settingId then
+            return
+        end
+
+        local attribute = settingsMap[data.settingId]
+        if attribute then
+            self[attribute] = data.value
+            SRCDebug(1, string.format("Changing ShortRest '%s' value to '%s'", data.settingId, tostring(data.value)))
+        end
+    end)
+
     -- Check state of short rest upon loading a save: if it was blocked, then enable it again.
     -- This is necessary because, if the cooldown is too long and the player saves and reloads, the short rest will be blocked, but the cooldown will not be active anymore, so short resting would be disabled indefinitely.
     SRCModVars = Ext.Vars.GetModVariables(ModuleUUID)
