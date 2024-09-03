@@ -16,28 +16,32 @@ function ShortRest:Init()
     }
 
     -- Update the ShortRest instance values when the MCM settings are changed
-    Ext.RegisterNetListener("MCM_Saved_Setting", function(call, payload)
-        local data = Ext.Json.Parse(payload)
-        if not data or data.modGUID ~= ModuleUUID or not data.settingId then
+    Ext.ModEvents.BG3MCM['MCM_Setting_Saved']:Subscribe(function(payload)
+        if not payload or payload.modUUID ~= ModuleUUID or not payload.settingId then
             return
         end
 
-        local attribute = settingsMap[data.settingId]
+        local attribute = settingsMap[payload.settingId]
         if attribute then
-            self[attribute] = data.value
-            SRCDebug(1, string.format("Changing ShortRest '%s' value to '%s'", data.settingId, tostring(data.value)))
+            self[attribute] = payload.value
+            SRCDebug(1, string.format("Changing ShortRest '%s' value to '%s'", payload.settingId, tostring(payload.value)))
         end
     end)
 
     -- Check state of short rest upon loading a save: if it was blocked, then enable it again.
     -- This is necessary because, if the cooldown is too long and the player saves and reloads, the short rest will be blocked, but the cooldown will not be active anymore, so short resting would be disabled indefinitely.
-    SRCModVars = Ext.Vars.GetModVariables(ModuleUUID)
-    if SRCModVars then
-        SRCModVars.HasBlockedShortRest = SRCModVars.HasBlockedShortRest or {}
-        if SRCModVars.HasBlockedShortRest[1] then
-            self:EnableShortRest()
-        end
-    end
+    local gameplayStartedLID = nil
+    gameplayStartedLID = Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after",
+        function(levelName, isEditorMode)
+            SRCModVars = Ext.Vars.GetModVariables(ModuleUUID)
+            if SRCModVars then
+                SRCModVars.HasBlockedShortRest = SRCModVars.HasBlockedShortRest or {}
+                if SRCModVars.HasBlockedShortRest[1] then
+                    self:EnableShortRest()
+                    Ext.Osiris.UnregisterListener(gameplayStartedLID)
+                end
+            end
+        end)
 end
 
 function ShortRest:HandleCooldownFinished(timer)
