@@ -30,7 +30,7 @@
                         {
                             "Id": "cooldown_duration",
                             "Name": "Cooldown duration (seconds)",
-                            "Type": "slider_int",
+                            "Type": "int",
                             "Default": 2,
                             "Description": "The duration of the short rest cooldown in seconds.",
                             "Handles": {
