@@ -24,7 +24,8 @@ function ShortRest:Init()
         local attribute = settingsMap[payload.settingId]
         if attribute then
             self[attribute] = payload.value
-            SRCDebug(1, string.format("Changing ShortRest '%s' value to '%s'", payload.settingId, tostring(payload.value)))
+            SRCDebug(1,
+                string.format("Changing ShortRest '%s' value to '%s'", payload.settingId, tostring(payload.value)))
         end
     end)
 
